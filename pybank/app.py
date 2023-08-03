@@ -1,6 +1,10 @@
 from fastapi import FastAPI
+from routers import accounts, users
+
 
 app = FastAPI()
+
+app.include_router(accounts.router)
 
 @app.get("/")
 def index():
