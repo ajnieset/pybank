@@ -1,8 +1,9 @@
+from __future__ import annotations
 from typing import Annotated, Any
 from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, Session
 
-from .schemas import Account as AccountData, User as UserData
+from .schemas import Account as AccountData, UserBase, User as UserData
 
 
 class Base(DeclarativeBase):
@@ -10,7 +11,7 @@ class Base(DeclarativeBase):
 
 
 # Annotated types
-intpk = Annotated[int, mapped_column(primary_key=True)]
+intpk = Annotated[int, mapped_column(primary_key=True, autoincrement=True)]
 # user_fk = Annotated[int, mapped_column(ForeignKey("users.id"))]
 
 
@@ -29,12 +30,12 @@ class Account(Base):
         # self.user = user
 
     @classmethod
-    def get_by_id(cls, id: int, db: Session):
+    def get_by_id(cls, id: int, db: Session) -> Account:
         return db.query(cls).filter_by(id=id).first()
     
     @classmethod
     def create_account(cls, data: AccountData, db: Session):
-        db.add(cls(id=data.id, balance=data.balance, user_id=data.user_id, user=None))
+        db.add(cls(id=data.id, balance=0.00, user_id=data.user_id, user=None))
         db.commit()
 
 
@@ -46,6 +47,15 @@ class User(Base):
     password: Mapped[str] = mapped_column(String)
     # account: Mapped["User"] = relationship("Account", back_populates="user")
 
+    def __init__(self, email: str, password: str):
+        self.email = email
+        self.password = password
+
     @classmethod
-    def get_by_id(cls, id: int, db: Session):
+    def get_by_id(cls, id: int, db: Session) -> User:
         return db.query(cls).filter_by(id=id).first()
+    
+    @classmethod
+    def create_user(cls, data: UserBase, db: Session):
+        db.add(cls(email=data.email, password=data.password))
+        db.commit()
