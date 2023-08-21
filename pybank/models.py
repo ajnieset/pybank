@@ -59,3 +59,13 @@ class User(Base):
     def create_user(cls, data: UserBase, db: Session):
         db.add(cls(email=data.email, password=data.password))
         db.commit()
+
+    @classmethod
+    def update_user(cls, data: UserBase, db: Session):
+        ...
+
+    @classmethod
+    def delete_user(cls, user_id: int, db: Session):
+        user_to_delete = User.get_by_id(user_id, db)
+        db.delete(user_to_delete)
+        db.commit()

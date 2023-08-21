@@ -20,3 +20,22 @@ def create_user(data: UserBase, db: Session = Depends(get_db)):
         print(e)
         return Response(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
     return Response(status_code=status.HTTP_201_CREATED)
+
+@router.put("")
+def update_user(data: UserBase, db: Session = Depends(get_db)):
+    try:
+        User.update_user(data, db)
+    except Exception as e:
+        print(e)
+        return Response(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    return Response(status_code=status.HTTP_200_OK)
+
+@router.delete("{user_id}")
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+    try:
+        User.delete_user(user_id, db)
+    except Exception as e:
+        print(e)
+        return Response(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
