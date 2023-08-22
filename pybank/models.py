@@ -1,9 +1,9 @@
 from __future__ import annotations
-from typing import Annotated, Any
+from typing import Annotated
 from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, Session
 
-from .schemas import Account as AccountData, UserBase, User as UserData
+from .schemas import Account as AccountData, UserBase
 
 
 class Base(DeclarativeBase):
