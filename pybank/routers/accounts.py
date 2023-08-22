@@ -9,9 +9,11 @@ from ..schemas import AccountBase
 
 router = APIRouter(prefix="/accounts")
 
+
 @router.get("/{account_id}")
-def get_account(account_id:int, db: Session = Depends(get_db)):
+def get_account(account_id: int, db: Session = Depends(get_db)):
     return Account.get_by_id(account_id, db)
+
 
 @router.post("")
 def create_account(data: AccountBase, db: Session = Depends(get_db)):
