@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from .routers import accounts, users
 from . import models
-from .db import engine, get_db
+from .db import engine
 
 
 models.Base.metadata.create_all(bind=engine)

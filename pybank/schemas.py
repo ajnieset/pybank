@@ -23,9 +23,12 @@ class User(UserBase):
         from_attributes = True
 
 
-class Account(AccountBase):
+class Account(BaseModel):
     id: int
-    User: Optional["User"] = None
+    balance: float
+    user_id: int
+    User: Optional["User"]
+
 
     class Config:
         from_attributes = True

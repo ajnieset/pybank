@@ -4,14 +4,14 @@ from sqlalchemy.orm import Session
 
 from ..db import get_db
 from ..models import Account
-from ..schemas import AccountBase
+from ..schemas import AccountBase, Account as AccountSchema
 
 
 router = APIRouter(prefix="/accounts")
 
 
 @router.get("/{account_id}")
-def get_account(account_id: int, db: Session = Depends(get_db)):
+def get_account(account_id: int, db: Session = Depends(get_db)) -> AccountSchema:
     return Account.get_by_id(account_id, db)
 
 

@@ -21,7 +21,7 @@ class Account(Base):
     id: Mapped[intpk]
     balance: Mapped[float]
     user_id: Mapped[user_fk]
-    user: Mapped["User"] = relationship(back_populates="account")
+    User: Mapped["User"] = relationship(back_populates="Account")
 
     @classmethod
     def get_by_id(cls, id: int, db: Session) -> Account:
@@ -39,7 +39,7 @@ class User(Base):
     id: Mapped[intpk]
     email: Mapped[str] = mapped_column(String)
     password: Mapped[str] = mapped_column(String)
-    account: Mapped["Account"] = relationship(back_populates="user")
+    Account: Mapped["Account"] = relationship(back_populates="User")
 
     @classmethod
     def get_by_id(cls, id: int, db: Session) -> User:
