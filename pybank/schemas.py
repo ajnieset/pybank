@@ -2,13 +2,10 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class CreateAccountRequest(BaseModel):
-    user_id: int
-
-
 class AccountBase(BaseModel):
     balance: float
     user_id: int
+    type: str
 
 
 class UserBase(BaseModel):
@@ -18,17 +15,15 @@ class UserBase(BaseModel):
 
 class User(UserBase):
     id: int
+    Account: Optional["AccountBase"]
 
     class Config:
         from_attributes = True
 
 
-class Account(BaseModel):
+class Account(AccountBase):
     id: int
-    balance: float
-    user_id: int
-    User: Optional["User"]
-
+    User: UserBase
 
     class Config:
         from_attributes = True

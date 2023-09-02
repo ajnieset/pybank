@@ -3,7 +3,7 @@ from typing import Annotated
 from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, Session
 
-from .schemas import Account as AccountData, UserBase
+from .schemas import AccountBase, UserBase
 
 
 class Base(DeclarativeBase):
@@ -20,6 +20,7 @@ class Account(Base):
 
     id: Mapped[intpk]
     balance: Mapped[float]
+    type: Mapped[str]
     user_id: Mapped[user_fk]
     User: Mapped["User"] = relationship(back_populates="Account")
 
@@ -28,8 +29,8 @@ class Account(Base):
         return db.query(cls).filter_by(id=id).first()
 
     @classmethod
-    def create_account(cls, data: AccountData, db: Session):
-        db.add(cls(balance=0.00, user_id=data.user_id))
+    def create_account(cls, data: AccountBase, db: Session):
+        db.add(cls(balance=0.00, user_id=data.user_id, type = data.type))
         db.commit()
 
 
@@ -56,6 +57,6 @@ class User(Base):
 
     @classmethod
     def delete_user(cls, user_id: int, db: Session):
-        user_to_delete = User.get_by_id(user_id, db)
+        user_to_delete = cls.get_by_id(user_id, db)
         db.delete(user_to_delete)
         db.commit()
